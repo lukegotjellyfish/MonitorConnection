@@ -24,7 +24,7 @@ function MainLoop
     $netshResult = CheckForCurrentProfile
 	IF ($netshResult -ne 2) {
         Log-Message "Attempting connection"
-        netsh wlan connect name="TALKTALK5F2228 2.4"
+        netsh wlan connect name="TALKTALK5F2228"
         Start-Sleep -s 2
         $netshResult = CheckForCurrentProfile
         IF ($netshResult -ne 2) {
@@ -36,7 +36,7 @@ function MainLoop
         }
     }
     ELSE {
-        Log-Message "Still connected to TALKTALK5F2228 2.4"
+        Log-Message "Still connected to TALKTALK5F2228"
         Start-Sleep -s 2
     }
 }
