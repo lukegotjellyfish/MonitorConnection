@@ -23,26 +23,38 @@ function MainLoop
 {
     $netshResult = CheckForCurrentProfile
 	IF ($netshResult -ne 2) {
-        Log-Message "Attempting connection"
-        netsh wlan connect name="TALKTALK5F2228"
+		Attempt-Connect
         Start-Sleep -s 2
         $netshResult = CheckForCurrentProfile
         IF ($netshResult -ne 2) {
 			Log-Message "Disabling WiFi 3"
             netsh interface set interface "WiFi 3" disable
+			Start-Sleep -s 2
+
 			Log-Message "Enabling WiFi 3"
             netsh interface set interface "WiFi 3" enable
+			Log-Message "Sleeping for 8 seconds"
             Start-Sleep -s 8
+			
+			Attempt-Connect
+			Start-Sleep -s 4
         }
     }
     ELSE {
         Log-Message "Still connected to TALKTALK5F2228"
+		Log-Message "Sleeping for 2 seconds"
         Start-Sleep -s 2
     }
 }
 
 function CheckForCurrentProfile {
     return (netsh wlan show interfaces | Select-String -Pattern "Profile" -AllMatches).Matches.Count
+}
+
+function Attempt-Connect {
+	Log-Message "Attempting connection"
+	netsh wlan connect name="TALKTALK5F2228"
+	Log-Message "Sleeping for 2 seconds"	
 }
 
 function Log-Message
